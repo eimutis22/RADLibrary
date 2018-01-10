@@ -17,9 +17,22 @@ namespace RADLibrary.Controllers
         private LibraryContext db = new LibraryContext();
 
         // GET: Members
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string searching)
         {
-            return View(await db.Members.ToListAsync());
+            string fName = null, lName = null;
+            string[] fullName = new string[2];
+            
+            if (searching != null)
+                if (searching.Contains(" "))
+                {
+                    fullName = searching.Split(' ');
+                    fName = fullName[0];
+                    lName = fullName[1];
+                    return View(db.Members.Where(x => (x.FirstName.Contains(fName) && x.SecondName.Contains(lName)) || x.FirstName.Contains(searching) || x.SecondName.Contains(searching) ||searching == null).ToList());
+                }
+            
+            return View(db.Members.Where(x => x.FirstName.Contains(searching) || x.SecondName.Contains(searching) || searching == null).ToList());
+            //return View(await db.Members.ToListAsync());
         }
 
         // GET: Members/Details/5
