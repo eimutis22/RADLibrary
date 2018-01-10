@@ -1,5 +1,10 @@
 namespace RADLibrary.Migrations.LibraryMigrations
 {
+    using Microsoft.Ajax.Utilities;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using Rad301ChristmasExam2017.Models;
+    using RADLibrary.Models;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -15,18 +20,49 @@ namespace RADLibrary.Migrations.LibraryMigrations
 
         protected override void Seed(Rad301ChristmasExam2017.Models.LibraryContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            SeedMembers(context);
+            SeedBooks(context);
+        }
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+        private void SeedMembers(LibraryContext context)
+        {
+            context.Members.AddOrUpdate(u => u.MemberID, new Rad301ChristmasExam2017.Models.Member
+            {
+                FirstName = "John",
+                SecondName = "Smith",
+                DateJoined = DateTime.Now
+            });
+
+            context.Members.AddOrUpdate(u => u.MemberID, new Rad301ChristmasExam2017.Models.Member
+            {
+                FirstName = "Jimmy",
+                SecondName = "Johnson",
+                DateJoined = DateTime.Now
+            });
+        }
+
+        private void SeedBooks(LibraryContext context)
+        {
+            context.Books.AddOrUpdate(u => u.BookID, new Book
+            {
+                Author = "Phil Knight",
+                ISBN = "123456",
+                Title = "Shoe Dog"
+            });
+
+            context.Books.AddOrUpdate(u => u.BookID, new Book
+            {
+                Author = "James Smith",
+                ISBN = "123432",
+                Title = "Titanic"
+            });
+
+            context.Books.AddOrUpdate(u => u.BookID, new Book
+            {
+                Author = "Jack Bloggs",
+                ISBN = "123333",
+                Title = "Awesome Book"
+            });
         }
     }
 }
